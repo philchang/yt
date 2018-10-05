@@ -289,12 +289,14 @@ class IOHandlerTipsyBinary(BaseIOHandler):
         return npart
 
     @classmethod
-    def _compute_dtypes(cls, field_dtypes, endian="<"):
+    def _compute_dtypes(cls, field_dtypes, endian="<",parameters={}):
         pds = {}
         for ptype, field in cls._fields:
             dtbase = field_dtypes.get(field, 'f')
             ff = "%s%s" % (endian, dtbase)
             if field in cls._vector_fields:
+                if parameters['bDoubleVel'] or parameters['bDoublePos']:
+		    ff = "%s%s" % (endian, 'f8')
                 dt = (field, [('x', ff), ('y', ff), ('z', ff)])
             else:
                 dt = (field, ff)
@@ -308,7 +310,8 @@ class IOHandlerTipsyBinary(BaseIOHandler):
         # We can just look at the particle counts.
         self._header_offset = data_file.ds._header_offset
         self._pdtypes = self._compute_dtypes(data_file.ds._field_dtypes,
-                                             data_file.ds.endian)
+                                             data_file.ds.endian,
+                                             parameters=data_file.ds.parameters)
         self._field_list = []
         for ptype, field in self._fields:
             if data_file.total_particles[ptype] == 0:

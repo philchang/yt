@@ -315,7 +315,8 @@ class TipsyDataset(SPHDataset):
         # per star particle.  If positions are stored as doubles, each of these
         # sizes is increased by 12 bytes.
         if (fs != 28+48*ng+36*nd+44*ns and fs != 28+60*ng+48*nd+56*ns and
-                fs != 32+48*ng+36*nd+44*ns and fs != 32+60*ng+48*nd+56*ns):
+                fs != 32+48*ng+36*nd+44*ns and fs != 32+60*ng+48*nd+56*ns and
+                fs != 28+72*ng+60*nd+68*ns and fs != 32+72*ng+60*nd+68*ns):
             f.close()
             return False, 0
         f.close()

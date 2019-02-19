@@ -67,14 +67,29 @@ def setup_astro_fields(registry, ftype = "gas", slice_info = None):
                        function=_ke,
                        units="")
 
+    def _ie_ideal(field, data):
+        temp = data[ftype, "temperature"]
+        from yt.units.yt_array import YTQuantity
+        K = YTQuantity(1.0,'K')
+        temp = temp / K
+        gamma = 5.0/3.0
+        G = 6.674e-8
+        R = 8.314e7 / G
+        ie_ideal = 1.0 / (gamma-1.0) * R * temp
+        return ie_ideal
+
+    registry.add_field((ftype,"ie_ideal"), sampling_type="cell",
+                       function=_ie_ideal,
+                       units="")
+
     def _Etot(field, data):
         phi = data[ftype, "Phi"]
-        ie = data[ftype, "ie"]
+        ie_ideal = data[ftype, "ie_ideal"]
         from yt.units.yt_array import YTQuantity
         cm = YTQuantity(1.0,'cm')
         phi = phi / cm
         ke = data[ftype, "ke"]
-        Etot = phi + ie + ke
+        Etot = phi + ie_ideal + ke
         return Etot
 
     registry.add_field((ftype,"Etot"), sampling_type="cell",

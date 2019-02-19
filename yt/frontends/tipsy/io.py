@@ -296,7 +296,7 @@ class IOHandlerTipsyBinary(BaseIOHandler):
             ff = "%s%s" % (endian, dtbase)
             if field in cls._vector_fields:
                 if parameters['bDoubleVel'] or parameters['bDoublePos']:
-		    ff = "%s%s" % (endian, 'f8')
+                    ff = "%s%s" % (endian, 'f8')
                 dt = (field, [('x', ff), ('y', ff), ('z', ff)])
             else:
                 dt = (field, ff)

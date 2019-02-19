@@ -68,7 +68,9 @@ sph_whitelist_fields = (
     'C_density',
     'O_density',
     'Si_density',
-    'Fe_density'
+    'Fe_density',
+    'ie',
+    'Phi'
 )
 
 
